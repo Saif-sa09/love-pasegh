@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Animation</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0f2027;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .bubbles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(255,192,203,0.5);
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    #content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+    #question {
+      font-size: 2.5em;
+      color: #ffe4e1;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeInDown 1s forwards;
+      text-shadow: 0 0 10px #ffe4e1;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn-container {
+      display: flex;
+      gap: 20px;
+      opacity: 0;
+      animation: fadeInUp 1s 0.5s forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      background: #ff69b4;
+      color: white;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 10px rgba(255,105,180,0.7);
+      transition: transform 0.2s;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    button:hover {
+      background: #ff1493;
+      transform: scale(1.1);
+    }
+    #response {
+      margin-top: 30px;
+      opacity: 0;
+    }
+    .response-bubble {
+      display: inline-block;
+      padding: 20px 30px;
+      border-radius: 40px;
+      font-size: 2em;
+      animation: fadeInScale 1s forwards;
+      text-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .huu-style {
+      background: rgba(255,182,193,0.9);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255,182,193,0.7);
+    }
+    .naa-style {
+      background: rgba(173,216,230,0.8);
+      color: #333;
+      box-shadow: 0 0 20px rgba(173,216,230,0.7);
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bubbles"></div>
+  <div id="content">
+    <div id="question">ektaa kotha shunba?</div>
+    <div class="btn-container">
+      <button id="huu">huu</button>
+      <button id="naa">Naa</button>
+    </div>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    const bubblesContainer = document.querySelector('.bubbles');
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+      const size = Math.random() * 50 + 20 + 'px';
+      bubble.style.width = size;
+      bubble.style.height = size;
+      bubble.style.left = Math.random() * 100 + '%';
+      bubble.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      bubble.style.background = `rgba(255,192,203,${Math.random() * 0.6 + 0.2})`;
+      bubblesContainer.appendChild(bubble);
+      setTimeout(() => { bubble.remove(); }, 10000);
+    }
+    setInterval(createBubble, 300);
+
+    const questionDiv = document.getElementById('question');
+    const btnContainer = document.querySelector('.btn-container');
+    const huuBtn = document.getElementById('huu');
+    const naaBtn = document.getElementById('naa');
+    const responseDiv = document.getElementById('response');
+
+    function showResponse(text, styleClass) {
+      questionDiv.style.display = 'none';
+      btnContainer.style.display = 'none';
+      const bubble = document.createElement('div');
+      bubble.classList.add('response-bubble', styleClass);
+      bubble.innerHTML = text;
+      responseDiv.appendChild(bubble);
+    }
+
+    huuBtn.addEventListener('click', () => {
+      showResponse('Sorry pocca, I love you ❤️', 'huu-style');
+    });
+
+    naaBtn.addEventListener('click', () => {
+      showResponse('kaner opor debo re', 'naa-style');
+    });
+  </script>
+</body>
+</html>
